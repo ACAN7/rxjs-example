@@ -2,10 +2,11 @@ import Rx from 'rx';
 import { polyfill } from 'es6-promise';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
-import { TOKEN } from './const_value';
+import { SEARCH_REPOS, TOKEN } from './constant';
 polyfill();
 
-const SEARCH_REPOS = 'https://api.github.com/search/repositories?sort=stars&order=desc&q=';
+// Compute size of package
+
 const KB2MB = 0.0009765625;
 const KB2BYTES = 1024;
 
@@ -22,6 +23,8 @@ export const formatRepoSizeAndUnit = (repoSize) => {
   }
   return [repoSize, 'KB'];
 };
+
+// Async get data from github api server
 
 const getReposPromise = (query) => {
   return new Promise((resolve, reject) => {
@@ -62,6 +65,8 @@ const getUserPromise = (data) => {
     });
   });
 };
+
+// Rx
 
 export const getRepos = (query) => {
   const promise = getReposPromise(query);

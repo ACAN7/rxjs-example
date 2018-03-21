@@ -47,16 +47,15 @@ $(() => {
     .map(() => $input.val().trim())
     .filter((text) => !!text)
     .distinctUntilChanged()
+    // 前面几个操作是去抖和防止一样的参数请求
     .flatMapLatest(getRepos)
     .do((results) => $conatiner.html(''))
+    // 没看文档不知道为什么这里用flatMap
     .flatMap((results) => Rx.Observable.from(results))
     .map((repos) => $(reposTemplate(repos)))
-    .do(($repos) => {
-      $conatiner.append($repos);
-    })
-    .flatMap(($repos) => {
-      return userInfoSteam($repos);
-    });
+    .do(($repos) => $conatiner.append($repos))
+    // 没看文档不知道为什么这里用flatMap
+    .flatMap(($repos) => userInfoSteam($repos));
 
   observable.subscribe(() => {
     console.log('success');
@@ -65,4 +64,5 @@ $(() => {
   }, () => {
     console.log('completed');
   });
+  
 });
